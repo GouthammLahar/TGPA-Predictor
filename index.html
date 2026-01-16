@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPU Grade Calculator | TGPA & CGPA</title>
+    <!-- Google Fonts for Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h1>LPU <span class="highlight">Grades</span></h1>
+            </div>
+            <p class="subtitle">Calculate your TGPA & CGPA with precision</p>
+        </header>
+
+        <div class="glass-panel">
+            <div class="glass-panel">
+                <!-- TGPA SECTION -->
+                <section id="tgpa-section" class="calculator-section active">
+                    <div class="controls-area">
+                        <button class="action-btn add-btn" onclick="addSubjectRow()">
+                            <i class="fa-solid fa-plus"></i> Add Subject
+                        </button>
+                        <button class="action-btn clear-btn" onclick="clearTgpaForms()">
+                            <i class="fa-solid fa-rotate-right"></i> Reset
+                        </button>
+                    </div>
+
+                    <div class="subjects-header">
+                        <div class="col">Subject Name (Opt)</div>
+                        <div class="col">Credits</div>
+                        <div class="col">Grade</div>
+                        <div class="col action-col"></div>
+                    </div>
+
+                    <div id="subjects-container">
+                        <!-- Rows will be added here by JS -->
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculateTGPA()">
+                        Calculate TGPA ➗
+                    </button>
+
+                    <div class="result-box" id="tgpa-result" style="display: none;">
+                        <span class="label">Your TGPA</span>
+                        <span class="value" id="tgpa-value">0.00</span>
+                        <p class="message" id="tgpa-message">Keep it up!</p>
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                <p>Made for LPU Students 🚀</p>
+            </footer>
+        </div>
+
+        <script src="script.js"></script>
+        <script>
+            // Initial setup
+            window.onload = function () {
+                // Add 5 default rows
+                for (let i = 0; i < 5; i++) addSubjectRow();
+            }
+        </script>
+</body>
+
+</html>
