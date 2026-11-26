@@ -32,54 +32,160 @@
         </header>
 
         <div class="glass-panel">
-            <div class="glass-panel">
-                <!-- TGPA SECTION -->
-                <section id="tgpa-section" class="calculator-section active">
+            <!-- Navigation Tabs -->
+            <div class="tabs-nav">
+                <button class="tab-btn active" id="tab-tgpa-btn" onclick="switchMainTab('tgpa')">
+                    <i class="fa-solid fa-calculator"></i> TGPA Calculator
+                </button>
+                <button class="tab-btn" id="tab-cgpa-btn" onclick="switchMainTab('cgpa')">
+                    <i class="fa-solid fa-chart-pie"></i> CGPA Calculator
+                </button>
+            </div>
+
+            <!-- TGPA SECTION -->
+            <section id="tgpa-section" class="calculator-section active">
+                <div class="controls-area">
+                    <button class="action-btn add-btn" onclick="addSubjectRow()">
+                        <i class="fa-solid fa-plus"></i> Add Subject
+                    </button>
+                    <button class="action-btn clear-btn" onclick="clearTgpaForms()">
+                        <i class="fa-solid fa-rotate-right"></i> Reset
+                    </button>
+                </div>
+
+                <div class="subjects-header">
+                    <div class="col">Subject Name (Opt)</div>
+                    <div class="col">Credits</div>
+                    <div class="col">Grade</div>
+                    <div class="col action-col"></div>
+                </div>
+
+                <div id="subjects-container">
+                    <!-- Rows will be added here by JS -->
+                </div>
+
+                <button class="calculate-btn" onclick="calculateTGPA()">
+                    Calculate TGPA ➗
+                </button>
+
+                <div class="result-box" id="tgpa-result" style="display: none;">
+                    <span class="label">Your TGPA</span>
+                    <span class="value" id="tgpa-value">0.00</span>
+                    <p class="message" id="tgpa-message">Keep it up!</p>
+                    <button class="transfer-btn" id="transfer-tgpa-btn" onclick="transferTgpaToCgpa()">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i> Send to CGPA Calculator
+                    </button>
+                </div>
+            </section>
+
+            <!-- CGPA SECTION -->
+            <section id="cgpa-section" class="calculator-section" style="display: none;">
+                <!-- Sub Mode Toggle -->
+                <div class="cgpa-mode-toggle">
+                    <button class="sub-tab-btn active" id="subtab-semesters-btn" onclick="switchCgpaMode('semesters')">
+                        <i class="fa-solid fa-list-ol"></i> All Semesters
+                    </button>
+                    <button class="sub-tab-btn" id="subtab-quick-btn" onclick="switchCgpaMode('quick')">
+                        <i class="fa-solid fa-bolt"></i> Previous CGPA + Current
+                    </button>
+                </div>
+
+                <!-- Mode 1: Semester-by-Semester -->
+                <div id="cgpa-semesters-mode">
                     <div class="controls-area">
-                        <button class="action-btn add-btn" onclick="addSubjectRow()">
-                            <i class="fa-solid fa-plus"></i> Add Subject
+                        <button class="action-btn add-btn" onclick="addSemesterRow()">
+                            <i class="fa-solid fa-plus"></i> Add Semester
                         </button>
-                        <button class="action-btn clear-btn" onclick="clearTgpaForms()">
+                        <button class="action-btn clear-btn" onclick="clearCgpaSemesters()">
                             <i class="fa-solid fa-rotate-right"></i> Reset
                         </button>
                     </div>
 
-                    <div class="subjects-header">
-                        <div class="col">Subject Name (Opt)</div>
+                    <div class="semesters-header">
+                        <div class="col col-sem-name">Semester</div>
+                        <div class="col">TGPA (0-10)</div>
                         <div class="col">Credits</div>
-                        <div class="col">Grade</div>
                         <div class="col action-col"></div>
                     </div>
 
-                    <div id="subjects-container">
-                        <!-- Rows will be added here by JS -->
+                    <div id="semesters-container">
+                        <!-- Semester rows added here by JS -->
                     </div>
 
-                    <button class="calculate-btn" onclick="calculateTGPA()">
-                        Calculate TGPA ➗
+                    <button class="calculate-btn" onclick="calculateSemesterCgpa()">
+                        Calculate CGPA 🎯
                     </button>
+                </div>
 
-                    <div class="result-box" id="tgpa-result" style="display: none;">
-                        <span class="label">Your TGPA</span>
-                        <span class="value" id="tgpa-value">0.00</span>
-                        <p class="message" id="tgpa-message">Keep it up!</p>
+                <!-- Mode 2: Quick Previous CGPA + Current Semester -->
+                <div id="cgpa-quick-mode" style="display: none;">
+                    <p class="mode-description">
+                        Quickly update your cumulative grade with your latest semester results.
+                    </p>
+
+                    <div class="quick-form-grid">
+                        <div class="form-group">
+                            <label for="prev-cgpa">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Previous CGPA
+                            </label>
+                            <input type="number" id="prev-cgpa" placeholder="e.g. 8.25" min="0" max="10" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="prev-credits">
+                                <i class="fa-solid fa-layer-group"></i> Previous Total Credits
+                            </label>
+                            <input type="number" id="prev-credits" placeholder="e.g. 60" min="1" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="curr-tgpa">
+                                <i class="fa-solid fa-award"></i> Current Semester TGPA
+                            </label>
+                            <input type="number" id="curr-tgpa" placeholder="e.g. 8.80" min="0" max="10" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="curr-credits">
+                                <i class="fa-solid fa-book-open"></i> Current Semester Credits
+                            </label>
+                            <input type="number" id="curr-credits" placeholder="e.g. 20" min="1" step="1">
+                        </div>
                     </div>
-                </section>
-            </div>
+
+                    <div class="quick-actions">
+                        <button class="action-btn clear-btn" onclick="clearQuickCgpaForm()">
+                            <i class="fa-solid fa-rotate-right"></i> Reset Fields
+                        </button>
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculateQuickCgpa()">
+                        Calculate Updated CGPA 🎯
+                    </button>
+                </div>
+
+                <!-- CGPA Result Box -->
+                <div class="result-box" id="cgpa-result" style="display: none;">
+                    <span class="label">Cumulative CGPA</span>
+                    <span class="value" id="cgpa-value">0.00</span>
+                    <div class="result-stats" id="cgpa-stats"></div>
+                    <p class="message" id="cgpa-message">Keep it up!</p>
+                </div>
+            </section>
 
             <footer>
                 <p>Made for LPU Students 🚀</p>
             </footer>
         </div>
+    </div>
 
-        <script src="script.js"></script>
-        <script>
-            // Initial setup
-            window.onload = function () {
-                // Add 5 default rows
-                for (let i = 0; i < 5; i++) addSubjectRow();
-            }
-        </script>
+    <script src="script.js"></script>
+    <script>
+        // Initial setup
+        window.onload = function () {
+            // Add 5 default rows for TGPA
+            for (let i = 0; i < 5; i++) addSubjectRow();
+            // Add 4 default semesters for CGPA
+            initSemesters();
+        }
+    </script>
 </body>
 
 </html>
